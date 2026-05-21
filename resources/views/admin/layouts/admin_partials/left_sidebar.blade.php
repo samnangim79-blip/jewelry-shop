@@ -17,29 +17,48 @@
             </a>
         </li>
 
-        <li class="menu-label">{{ __('messages.master_data') }}</li>
-        <li>
-            <a href="javascript:;" class="has-arrow">
-                <div class="parent-icon"><i class="bi bi-building"></i></div>
-                <div class="menu-title">{{ __('messages.master_data') }}</div>
-            </a>
-            <ul>
-                <li><a href="#"><i class="bi bi-arrow-right-short"></i>{{ __('messages.companies') }}</a></li>
-                <li><a href="#"><i class="bi bi-arrow-right-short"></i>{{ __('messages.branches') }}</a></li>
-                <li><a href="#"><i class="bi bi-arrow-right-short"></i>{{ __('messages.warehouses') }}</a></li>
-            </ul>
-        </li>
-        <li>
-            <a href="javascript:;" class="has-arrow">
-                <div class="parent-icon"><i class="bi bi-people"></i></div>
-                <div class="menu-title">{{ __('messages.user_management') }}</div>
-            </a>
-            <ul>
-                <li><a href="#"><i class="bi bi-arrow-right-short"></i>{{ __('messages.users') }}</a></li>
-                <li><a href="#"><i class="bi bi-arrow-right-short"></i>{{ __('messages.roles') }}</a></li>
-                <li><a href="#"><i class="bi bi-arrow-right-short"></i>{{ __('messages.permissions') }}</a></li>
-            </ul>
-        </li>
+        @php($user = auth()->user())
+
+        @if ($user && ($user->hasPermission('companies.view') || $user->hasPermission('branches.view') || $user->hasPermission('warehouses.view')))
+            <li class="menu-label">{{ __('messages.master_data') }}</li>
+            <li>
+                <a href="javascript:;" class="has-arrow">
+                    <div class="parent-icon"><i class="bi bi-building"></i></div>
+                    <div class="menu-title">{{ __('messages.master_data') }}</div>
+                </a>
+                <ul>
+                    @if ($user->hasPermission('companies.view'))
+                        <li><a href="{{ route('admin.companies.index') }}" wire:navigate><i class="bi bi-arrow-right-short"></i>{{ __('messages.companies') }}</a></li>
+                    @endif
+                    @if ($user->hasPermission('branches.view'))
+                        <li><a href="{{ route('admin.branches.index') }}" wire:navigate><i class="bi bi-arrow-right-short"></i>{{ __('messages.branches') }}</a></li>
+                    @endif
+                    @if ($user->hasPermission('warehouses.view'))
+                        <li><a href="{{ route('admin.warehouses.index') }}" wire:navigate><i class="bi bi-arrow-right-short"></i>{{ __('messages.warehouses') }}</a></li>
+                    @endif
+                </ul>
+            </li>
+        @endif
+
+        @if ($user && ($user->hasPermission('users.view') || $user->hasPermission('roles.view') || $user->hasPermission('permissions.view')))
+            <li>
+                <a href="javascript:;" class="has-arrow">
+                    <div class="parent-icon"><i class="bi bi-people"></i></div>
+                    <div class="menu-title">{{ __('messages.user_management') }}</div>
+                </a>
+                <ul>
+                    @if ($user->hasPermission('users.view'))
+                        <li><a href="{{ route('admin.users.index') }}" wire:navigate><i class="bi bi-arrow-right-short"></i>{{ __('messages.users') }}</a></li>
+                    @endif
+                    @if ($user->hasPermission('roles.view'))
+                        <li><a href="{{ route('admin.roles.index') }}" wire:navigate><i class="bi bi-arrow-right-short"></i>{{ __('messages.roles') }}</a></li>
+                    @endif
+                    @if ($user->hasPermission('permissions.view'))
+                        <li><a href="{{ route('admin.permissions.index') }}" wire:navigate><i class="bi bi-arrow-right-short"></i>{{ __('messages.permissions') }}</a></li>
+                    @endif
+                </ul>
+            </li>
+        @endif
 
         <li class="menu-label">{{ __('messages.catalog') }}</li>
         <li>

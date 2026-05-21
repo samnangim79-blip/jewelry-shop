@@ -20,5 +20,9 @@ class AppServiceProvider extends ServiceProvider
         Gate::before(function ($user) {
             return $user->isSuperAdmin() ? true : null;
         });
+
+        Gate::define('permission', function ($user, string $slug) {
+            return $user->hasPermission($slug);
+        });
     }
 }
