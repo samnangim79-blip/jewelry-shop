@@ -13,14 +13,17 @@ class LanguageSwitcher extends Component
         $this->currentLocale = app()->getLocale();
     }
 
-    public function switchLocale(string $locale): void
+    public function switchLocale(string $locale)
     {
-        if (in_array($locale, ['en', 'km'])) {
-            session()->put('locale', $locale);
-            app()->setLocale($locale);
-            $this->currentLocale = $locale;
-            $this->dispatch('locale-changed', locale: $locale);
+        if (! in_array($locale, ['en', 'km'], true)) {
+            return null;
         }
+
+        session()->put('locale', $locale);
+        app()->setLocale($locale);
+        $this->currentLocale = $locale;
+
+        return $this->redirect(url()->current(), navigate: true);
     }
 
     public function render()
