@@ -8,9 +8,12 @@ class LanguageSwitcher extends Component
 {
     public string $currentLocale;
 
+    public string $returnUrl;
+
     public function mount(): void
     {
         $this->currentLocale = app()->getLocale();
+        $this->returnUrl = request()->url();
     }
 
     public function switchLocale(string $locale)
@@ -23,7 +26,7 @@ class LanguageSwitcher extends Component
         app()->setLocale($locale);
         $this->currentLocale = $locale;
 
-        return $this->redirect(url()->current(), navigate: true);
+        return $this->redirect($this->returnUrl, navigate: true);
     }
 
     public function render()

@@ -11,6 +11,31 @@
 <script src="{{ asset('assets/backend') }}/assets/js/app.js"></script>
 
 <script>
+    function initJewelryShopPlugins() {
+        if (typeof bootstrap !== 'undefined') {
+            document.querySelectorAll('[data-bs-toggle="dropdown"]').forEach((el) => {
+                const existing = bootstrap.Dropdown.getInstance(el);
+                if (existing) existing.dispose();
+                new bootstrap.Dropdown(el);
+            });
+
+            document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((el) => {
+                const existing = bootstrap.Tooltip.getInstance(el);
+                if (existing) existing.dispose();
+                new bootstrap.Tooltip(el);
+            });
+        }
+
+        if (typeof window.jQuery !== 'undefined' && typeof window.jQuery.fn.metisMenu === 'function') {
+            window.jQuery('#menu').metisMenu();
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', initJewelryShopPlugins);
+    document.addEventListener('livewire:navigated', initJewelryShopPlugins);
+</script>
+
+<script>
     window.addEventListener('confirm-delete', (event) => {
         const detail = event.detail?.[0] ?? event.detail ?? {};
         Swal.fire({
