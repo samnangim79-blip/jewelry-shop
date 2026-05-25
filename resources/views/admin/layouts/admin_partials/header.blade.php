@@ -17,14 +17,21 @@
                 <li class="nav-item">
                     @livewire('components.language-switcher')
                 </li>
-                <li class="nav-item dropdown dropdown-large">
-                    <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
+                <li class="nav-item dropdown dropdown-large"
+                    x-data="{ open: false }"
+                    @click.outside="open = false"
+                    @keydown.escape.window="open = false">
+                    <a class="nav-link dropdown-toggle dropdown-toggle-nocaret"
+                       href="javascript:;"
+                       role="button"
+                       @click.prevent="open = !open"
+                       :aria-expanded="open.toString()">
                         <div class="user-setting d-flex align-items-center gap-1">
                             <img src="{{ asset('assets/backend') }}/assets/images/avatars/avatar-1.png" class="user-img" alt="">
                             <div class="user-name d-none d-sm-block">{{ auth()->user()?->name }}</div>
                         </div>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
+                    <ul class="dropdown-menu dropdown-menu-end" :class="open ? 'show' : ''">
                         <li>
                             <a class="dropdown-item" href="#">
                                 <div class="d-flex align-items-center">
